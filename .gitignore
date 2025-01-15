@@ -1,5 +1,7 @@
 .DS_Store
 .direnv
+input.txt
+node_modules/
 result
 static/index.html
-input.txt
+static/style/output.css

@@ -14,7 +14,7 @@
         devShells.default = pkgs.mkShell {
           buildInputs = with pkgs; [
             go
-            just
+            nodejs_22
           ];
         };
       }

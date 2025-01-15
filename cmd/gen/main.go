@@ -29,7 +29,7 @@ func run(stdout io.Writer, args []string) error {
 	_ = args
 
 	if _, err := os.Stat(tmplFile); os.IsNotExist(err) {
-    return fmt.Errorf("file does not exist: %s", tmplFile)
+		return fmt.Errorf("file does not exist: %s", tmplFile)
 	}
 
 	tmpl, err := template.ParseFiles(tmplFile)

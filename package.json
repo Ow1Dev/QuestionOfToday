@@ -1,0 +1,17 @@
+{
+  "name": "qustionoftoday",
+  "version": "1.0.0",
+  "scripts": {
+    "build": "npm run build-site && npm run build-style",
+    "build-site": "go run cmd/gen/main.go",
+    "build-style": "tailwindcss -i ./static/style/input.css -o ./static/style/output.css",
+    "update": "nix flake update",
+    "fmt": "go fmt ./..."
+  },
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "devDependencies": {
+    "tailwindcss": "^3.4.17"
+  }
+}
