@@ -14,7 +14,7 @@ type Question struct {
 var tmplFile = "template/question.html.tmpl"
 
 var q = Question{
-	Question: "What is your name!",
+	Question: "In a website browser address bar, what does “www” stand for?",
 }
 
 func main() {

@@ -1,3 +1,27 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 211.03, 52.73%, 10.78%;
+    --foreground: 75, 6.25%, 87.45%;
+    --border: 216 34% 17%;
+    --input: 75, 6.25%, 87.45%;
+    --card: 219.38, 37.21%, 16.86%; 
+    --card-foreground: 75, 6.25%, 87.45%;
+    --primary: 172.7, 57.79%, 39.02%;
+    --primary-foreground: 75, 6.25%, 87.45%;
+    --ring: 172.7, 57.79%, 39.02%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply font-sans antialiased bg-background text-foreground;
+  }
+}

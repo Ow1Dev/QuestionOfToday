@@ -6,7 +6,8 @@
     "build-site": "go run cmd/gen/main.go",
     "build-style": "tailwindcss -i ./static/style/input.css -o ./static/style/output.css",
     "update": "nix flake update",
-    "fmt": "go fmt ./..."
+    "fmt": "go fmt ./...",
+    "docker-up": "docker compose -f infra/compose.yml up"
   },
   "author": "",
   "license": "ISC",
