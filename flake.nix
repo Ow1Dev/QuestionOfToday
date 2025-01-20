@@ -15,6 +15,8 @@
           buildInputs = with pkgs; [
             go
             nodejs_22
+            just
+            tailwindcss
           ];
         };
       }
