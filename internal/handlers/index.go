@@ -38,6 +38,7 @@ func HandleIndex() http.Handler {
 				http.Error(w, err.Error(), http.StatusInternalServerError)
         return
 			}
+
 		},
 	)
 }

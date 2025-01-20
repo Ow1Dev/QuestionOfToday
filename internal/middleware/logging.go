@@ -1,13 +1,22 @@
 package logging
 
 import (
-	"log"
 	"net/http"
+	"time"
+
+	"github.com/rs/zerolog"
 )
 
-func NewLoggingMiddleware(next http.Handler) http.Handler {
+func NewLoggingMiddleware(logger *zerolog.Logger, next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		log.Printf("Request: %s %s", r.Method, r.URL.Path)
+    start := time.Now()
+
 		next.ServeHTTP(w, r)
+
+    logger.Info().
+      Str("method", r.Method).
+      Str("url", r.URL.RequestURI()).
+      Dur("duration", time.Since(start)).
+      Msg("incoming request")
 	})
 }

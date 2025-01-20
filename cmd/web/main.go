@@ -4,7 +4,6 @@ import (
 	"context"
 	"fmt"
 	"io"
-	"log"
 	"net"
 	"net/http"
 	"os"
@@ -13,6 +12,7 @@ import (
 
 	"github.com/Ow1Dev/QustionOfToday/internal/config"
 	"github.com/Ow1Dev/QustionOfToday/internal/server"
+	"github.com/rs/zerolog"
 )
 
 func main() {
@@ -31,7 +31,13 @@ func run(stdout io.Writer, args []string) error {
 		Port: "3000",
 	}
 
+  logger := zerolog.New(zerolog.ConsoleWriter{Out: os.Stderr, TimeFormat: time.RFC3339}).
+		With().
+		Timestamp().
+		Logger()
+
 	srv := server.NewServer(
+		&logger,
 		&config,
 	)
 
@@ -44,7 +50,7 @@ func run(stdout io.Writer, args []string) error {
 	defer stop()
 
 	go func() {
-		log.Printf("listening on %s\n", httpServer.Addr)
+		logger.Info().Msgf("listening on %s", httpServer.Addr)
 		if err := httpServer.ListenAndServe(); err != nil && err != http.ErrServerClosed {
 			fmt.Fprintf(os.Stderr, "error listening and serving: %s\n", err)
 		}
