@@ -1,6 +1,6 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
-  content: ["./static/*.html"],
+  content: ["./public/*.html"],
   theme: {
     colors: {
       border: "hsl(var(--border))",

@@ -10,7 +10,7 @@
     "docker-up": "docker compose -f infra/compose.yml up"
   },
   "author": "",
-  "license": "ISC",
+  "license": "MIT",
   "description": "",
   "devDependencies": {
     "tailwindcss": "^3.4.17"
