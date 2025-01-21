@@ -25,7 +25,18 @@ func addRoutes(
 	mux *http.ServeMux,
 ) {
   mux.Handle("/static/", http.StripPrefix("/static/", http.FileServer(http.Dir("./public"))))
-	mux.Handle("/anwser", handlers.HandleAnwser())
-	mux.Handle("/", handlers.HandleIndex())
+	mux.Handle("/anwser", methodRestrict(http.MethodPost, handlers.HandleAnwser()))
+	mux.Handle("/", methodRestrict(http.MethodGet, handlers.HandleIndex()))
 }
+
+func methodRestrict(method string, next http.Handler) http.Handler {
+    return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+        if r.Method != method {
+            http.Error(w, "Method Not Allowed", http.StatusMethodNotAllowed)
+            return
+        }
+        next.ServeHTTP(w, r)
+    })
+}
+
 

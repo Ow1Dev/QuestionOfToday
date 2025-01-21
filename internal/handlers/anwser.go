@@ -16,11 +16,6 @@ func HandleAnwser() http.Handler {
 	)
 	return http.HandlerFunc(
 		func(w http.ResponseWriter, r *http.Request) {
-      if r.Method != http.MethodPost {
-        http.Error(w, "Method Not Allowed", http.StatusMethodNotAllowed)
-        return
-      }
-
       init.Do(func(){
         tpl, tplerr = template.ParseFiles(tmplFile_correct)
       })
