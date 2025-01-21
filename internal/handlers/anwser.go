@@ -6,7 +6,7 @@ import (
 	"text/template"
 )
 
-var tmplFile_correct = "template/correct.html.tmpl"
+var tmplFile_correct = "template/anwser.html.tmpl"
 
 func HandleAnwser() http.Handler {
 	var (
