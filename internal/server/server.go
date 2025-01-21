@@ -25,6 +25,7 @@ func addRoutes(
 	mux *http.ServeMux,
 ) {
   mux.Handle("/static/", http.StripPrefix("/static/", http.FileServer(http.Dir("./public"))))
+	mux.Handle("/anwser", handlers.HandleAnwser())
 	mux.Handle("/", handlers.HandleIndex())
 }
 

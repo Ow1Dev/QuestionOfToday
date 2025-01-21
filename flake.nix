@@ -14,6 +14,7 @@
         devShells.default = pkgs.mkShell {
           buildInputs = with pkgs; [
             go
+            air
             nodejs_22
             just
             tailwindcss
