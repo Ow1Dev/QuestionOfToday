@@ -19,3 +19,12 @@ test-all:
 # format the code
 fmt:
     @go fmt ./...
+
+up:
+  docker compose up -d
+
+down:
+  docker compose down --remove-orphans --volumes
+
+migrate-up:
+  source ./.env && migrate -database postgres://dev:dev123@localhost/questionoftoday?sslmode=disable -path ./migrations up

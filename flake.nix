@@ -15,6 +15,7 @@
           buildInputs = with pkgs; [
             go
             air
+            go-migrate
             nodejs_22
             just
             tailwindcss
