@@ -6,16 +6,17 @@ import (
 	"github.com/Ow1Dev/QustionOfToday/internal/config"
 	"github.com/Ow1Dev/QustionOfToday/internal/handlers"
 	"github.com/Ow1Dev/QustionOfToday/internal/middleware"
+	"github.com/Ow1Dev/QustionOfToday/internal/repository"
 	"github.com/rs/zerolog"
 )
 
 func NewServer(
   logger *zerolog.Logger,
 	config *config.Config,
+	repo *repository.Queries,
 ) http.Handler {
 	mux := http.NewServeMux()
-	addRoutes(mux)
-
+	addRoutes(mux, repo)
 	var handler http.Handler = mux
 	handler = logging.NewLoggingMiddleware(logger, handler)
 	return handler
@@ -23,10 +24,11 @@ func NewServer(
 
 func addRoutes(
 	mux *http.ServeMux,
+	repo *repository.Queries,
 ) {
   mux.Handle("/static/", http.StripPrefix("/static/", http.FileServer(http.Dir("./public"))))
 	mux.Handle("/anwser", methodRestrict(http.MethodPost, handlers.HandleAnwser()))
-	mux.Handle("/", methodRestrict(http.MethodGet, handlers.HandleIndex()))
+	mux.Handle("/", methodRestrict(http.MethodGet, handlers.HandleIndex(repo)))
 }
 
 func methodRestrict(method string, next http.Handler) http.Handler {

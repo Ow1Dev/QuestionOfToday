@@ -16,6 +16,7 @@
             go
             air
             go-migrate
+            sqlc
             nodejs_22
             just
             tailwindcss

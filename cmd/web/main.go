@@ -11,7 +11,10 @@ import (
 	"time"
 
 	"github.com/Ow1Dev/QustionOfToday/internal/config"
+	"github.com/Ow1Dev/QustionOfToday/internal/database"
+	"github.com/Ow1Dev/QustionOfToday/internal/repository"
 	"github.com/Ow1Dev/QustionOfToday/internal/server"
+	"github.com/joho/godotenv"
 	"github.com/rs/zerolog"
 )
 
@@ -26,19 +29,32 @@ func run(stdout io.Writer, args []string) error {
 	_ = stdout
 	_ = args
 
+  godotenv.Load()
+  
+	ctx, stop := context.WithCancel(context.Background())
+	defer stop()
+
 	config := config.Config{
 		Host: "0.0.0.0",
 		Port: "3000",
 	}
 
   logger := zerolog.New(zerolog.ConsoleWriter{Out: os.Stderr, TimeFormat: time.RFC3339}).
-		With().
+	With().
 		Timestamp().
 		Logger()
+
+  db, err := database.Connect(ctx)
+  if err != nil {
+    return err
+  }
+
+  repo := repository.New(db)
 
 	srv := server.NewServer(
 		&logger,
 		&config,
+    repo,
 	)
 
 	httpServer := &http.Server{
@@ -46,8 +62,6 @@ func run(stdout io.Writer, args []string) error {
 		Handler: srv,
 	}
 
-	ctx, stop := context.WithCancel(context.Background())
-	defer stop()
 
 	go func() {
 		logger.Info().Msgf("listening on %s", httpServer.Addr)
