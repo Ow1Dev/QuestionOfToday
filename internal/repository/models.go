@@ -6,9 +6,11 @@ package repository
 
 import (
 	"github.com/google/uuid"
+	"github.com/jackc/pgx/v5/pgtype"
 )
 
 type QuestOfTodayQuestion struct {
 	ID       uuid.UUID
 	Question string
+	Dato     pgtype.Date
 }

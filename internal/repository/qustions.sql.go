@@ -10,7 +10,7 @@ import (
 )
 
 const getAllQuestions = `-- name: GetAllQuestions :many
-SELECT id, question FROM quest_of_today.questions
+SELECT id, question, dato FROM quest_of_today.questions
 `
 
 func (q *Queries) GetAllQuestions(ctx context.Context) ([]QuestOfTodayQuestion, error) {
@@ -22,7 +22,7 @@ func (q *Queries) GetAllQuestions(ctx context.Context) ([]QuestOfTodayQuestion, 
 	var items []QuestOfTodayQuestion
 	for rows.Next() {
 		var i QuestOfTodayQuestion
-		if err := rows.Scan(&i.ID, &i.Question); err != nil {
+		if err := rows.Scan(&i.ID, &i.Question, &i.Dato); err != nil {
 			return nil, err
 		}
 		items = append(items, i)
