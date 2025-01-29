@@ -1,3 +1,5 @@
+set dotenv-load
+
 # List available commands
 default:
     @just --list
@@ -27,4 +29,4 @@ down:
   docker compose down --remove-orphans --volumes
 
 migrate-up:
-  source ./.env && migrate -database postgres://dev:dev123@localhost/questionoftoday?sslmode=disable -path ./migrations up
+  migrate -database $DATABASE_URL -path ./migrations up
