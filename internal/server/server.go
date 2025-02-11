@@ -27,6 +27,6 @@ func addRoutes(
 	repo *repository.Queries,
 ) {
   mux.Handle("GET /static/", http.StripPrefix("/static/", http.FileServer(http.Dir("./public"))))
-  mux.Handle("POST /anwser", handlers.HandleAnwser())
+  mux.Handle("POST /answer", handlers.HandleAnswer())
   mux.Handle("GET /", handlers.HandleIndex(repo))
 }

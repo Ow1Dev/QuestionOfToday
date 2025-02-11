@@ -28,9 +28,8 @@ func main() {
 func run(stdout io.Writer, args []string) error {
 	_ = stdout
 	_ = args
+	godotenv.Load()
 
-  godotenv.Load()
-  
 	ctx, stop := context.WithCancel(context.Background())
 	defer stop()
 
@@ -39,29 +38,28 @@ func run(stdout io.Writer, args []string) error {
 		Port: "3000",
 	}
 
-  logger := zerolog.New(zerolog.ConsoleWriter{Out: os.Stderr, TimeFormat: time.RFC3339}).
-	With().
+	logger := zerolog.New(zerolog.ConsoleWriter{Out: os.Stderr, TimeFormat: time.RFC3339}).
+		With().
 		Timestamp().
 		Logger()
 
-  db, err := database.Connect(ctx)
-  if err != nil {
-    return err
-  }
+	db, err := database.Connect(ctx)
+	if err != nil {
+		return err
+	}
 
-  repo := repository.New(db)
+	repo := repository.New(db)
 
 	srv := server.NewServer(
 		&logger,
 		&config,
-    repo,
+		repo,
 	)
 
 	httpServer := &http.Server{
 		Addr:    net.JoinHostPort(config.Host, config.Port),
 		Handler: srv,
 	}
-
 
 	go func() {
 		logger.Info().Msgf("listening on %s", httpServer.Addr)
