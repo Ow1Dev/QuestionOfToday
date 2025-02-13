@@ -1,7 +1,6 @@
 package handlers
 
 import (
-	"fmt"
 	"net/http"
 	"sync"
 	"text/template"
@@ -11,16 +10,17 @@ import (
 
 var tmplFile = "template/question.html.tmpl"
 
-type question struct {
-	Question string
-}
+var (
+	question = "In a website browser address bar, what does “www” stand for?"
+)
 
-var q = question{
-	Question: "In a website browser address bar, what does “www” stand for?",
+type Question struct {
+	Question string
 }
 
 func HandleIndex(
 	repo *repository.Queries,
+	debug bool,
 ) http.Handler {
 	var (
 		init   sync.Once
@@ -29,27 +29,33 @@ func HandleIndex(
 	)
 	return http.HandlerFunc(
 		func(w http.ResponseWriter, r *http.Request) {
-      init.Do(func(){
-        tpl, tplerr = template.ParseFiles(tmplFile)
-      })
+			init.Do(func() {
+				tpl, tplerr = template.ParseFiles(tmplFile)
+			})
 
-      question, err := repo.GetAllQuestions(r.Context())
-			if err != nil {
-				http.Error(w, err.Error(), http.StatusInternalServerError)
-				return
+			var qu = question
+
+			if !debug {
+				question, err := repo.GetAllQuestions(r.Context())
+				if err != nil {
+					http.Error(w, err.Error(), http.StatusInternalServerError)
+					return
+				}
+
+				qu = question[0].Question
 			}
-
-      fmt.Println(question[0])
 
 			if tplerr != nil {
 				http.Error(w, tplerr.Error(), http.StatusInternalServerError)
 				return
 			}
 
-      err = tpl.ExecuteTemplate(w, "question", question[0])
+			err := tpl.ExecuteTemplate(w, "question", Question{
+				Question: qu,
+			})
 			if err != nil {
 				http.Error(w, err.Error(), http.StatusInternalServerError)
-        return
+				return
 			}
 
 		},

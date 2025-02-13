@@ -5,8 +5,8 @@ default:
     @just --list
 
 # Run solution for a giving day 
-run:
-    @go run cmd/web/main.go
+run ARGS="":
+    @go run cmd/web/main.go {{ARGS}}
 
 compile-style:
     @tailwindcss -i ./public/style/input.css -o ./public/style/output.css

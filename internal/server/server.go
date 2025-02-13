@@ -11,12 +11,13 @@ import (
 )
 
 func NewServer(
-  logger *zerolog.Logger,
+	logger *zerolog.Logger,
 	config *config.Config,
 	repo *repository.Queries,
+	debug bool,
 ) http.Handler {
 	mux := http.NewServeMux()
-	addRoutes(mux, repo)
+	addRoutes(mux, repo, debug)
 	var handler http.Handler = mux
 	handler = logging.NewLoggingMiddleware(logger, handler)
 	return handler
@@ -25,8 +26,9 @@ func NewServer(
 func addRoutes(
 	mux *http.ServeMux,
 	repo *repository.Queries,
+	debug bool,
 ) {
-  mux.Handle("GET /static/", http.StripPrefix("/static/", http.FileServer(http.Dir("./public"))))
-  mux.Handle("POST /answer", handlers.HandleAnswer())
-  mux.Handle("GET /", handlers.HandleIndex(repo))
+	mux.Handle("GET /static/", http.StripPrefix("/static/", http.FileServer(http.Dir("./public"))))
+	mux.Handle("POST /answer", handlers.HandleAnswer())
+	mux.Handle("GET /", handlers.HandleIndex(repo, debug))
 }

@@ -2,6 +2,7 @@ package main
 
 import (
 	"context"
+	"flag"
 	"fmt"
 	"io"
 	"net"
@@ -28,6 +29,10 @@ func main() {
 func run(stdout io.Writer, args []string) error {
 	_ = stdout
 	_ = args
+
+	debug := flag.Bool("Debug", false, "Turn on debug")
+	flag.Parse()
+
 	godotenv.Load()
 
 	ctx, stop := context.WithCancel(context.Background())
@@ -43,6 +48,10 @@ func run(stdout io.Writer, args []string) error {
 		Timestamp().
 		Logger()
 
+	if *debug {
+		logger.Debug().Msg("Debug is turned on")
+	}
+
 	db, err := database.Connect(ctx)
 	if err != nil {
 		return err
@@ -54,6 +63,7 @@ func run(stdout io.Writer, args []string) error {
 		&logger,
 		&config,
 		repo,
+		*debug,
 	)
 
 	httpServer := &http.Server{
