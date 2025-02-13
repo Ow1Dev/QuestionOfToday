@@ -12,6 +12,22 @@ import (
 	"github.com/jackc/pgx/v5/pgtype"
 )
 
+const getAnswerById = `-- name: GetAnswerById :one
+SELECT answer, source FROM quest_of_today.questions where id = $1
+`
+
+type GetAnswerByIdRow struct {
+	Answer string
+	Source string
+}
+
+func (q *Queries) GetAnswerById(ctx context.Context, id uuid.UUID) (GetAnswerByIdRow, error) {
+	row := q.db.QueryRow(ctx, getAnswerById, id)
+	var i GetAnswerByIdRow
+	err := row.Scan(&i.Answer, &i.Source)
+	return i, err
+}
+
 const getTodaysQuestion = `-- name: GetTodaysQuestion :one
 SELECT id, question FROM quest_of_today.questions WHERE dato = $1
 `

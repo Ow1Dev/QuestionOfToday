@@ -17,7 +17,7 @@ func NewServer(
 	debug bool,
 ) http.Handler {
 	mux := http.NewServeMux()
-	addRoutes(mux, repo, debug)
+	addRoutes(mux, repo, logger, debug)
 	var handler http.Handler = mux
 	handler = logging.NewLoggingMiddleware(logger, handler)
 	return handler
@@ -26,9 +26,10 @@ func NewServer(
 func addRoutes(
 	mux *http.ServeMux,
 	repo *repository.Queries,
+	logger *zerolog.Logger,
 	debug bool,
 ) {
 	mux.Handle("GET /static/", http.StripPrefix("/static/", http.FileServer(http.Dir("./public"))))
-	mux.Handle("POST /answer", handlers.HandleAnswer())
+	mux.Handle("POST /answer", handlers.HandleAnswer(repo, logger))
 	mux.Handle("GET /", handlers.HandleIndex(repo, debug))
 }

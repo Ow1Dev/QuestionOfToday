@@ -12,5 +12,7 @@ import (
 type QuestOfTodayQuestion struct {
 	ID       uuid.UUID
 	Question string
+	Answer   string
+	Source   string
 	Dato     pgtype.Date
 }

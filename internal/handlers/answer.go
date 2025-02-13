@@ -4,11 +4,15 @@ import (
 	"net/http"
 	"sync"
 	"text/template"
+
+	"github.com/Ow1Dev/QustionOfToday/internal/repository"
+	"github.com/google/uuid"
+	"github.com/rs/zerolog"
 )
 
 var tmplFile_correct = "template/answer.html.tmpl"
 
-func HandleAnswer() http.Handler {
+func HandleAnswer(repo *repository.Queries, logger *zerolog.Logger) http.Handler {
 	var (
 		init   sync.Once
 		tpl    *template.Template
@@ -25,8 +29,31 @@ func HandleAnswer() http.Handler {
 				return
 			}
 
-			answer := r.FormValue("answer")
-			if answer != "World wide web" {
+			userAnswer := r.FormValue("answer")
+			id := r.FormValue("id")
+
+			logger.Debug().Msgf("Got id %s", id)
+
+			if id == "" {
+				http.NotFound(w, r)
+				return
+			}
+
+			uuidid, err := uuid.Parse(id)
+			if err != nil {
+				http.Error(w, tplerr.Error(), http.StatusInternalServerError)
+				return
+			}
+
+			realanswer, err := repo.GetAnswerById(r.Context(), uuidid)
+			if err != nil {
+				http.Error(w, tplerr.Error(), http.StatusInternalServerError)
+				return
+			}
+
+			logger.Debug().Msgf("Got answer with id %s ", id)
+
+			if userAnswer != realanswer.Answer {
 				err := tpl.ExecuteTemplate(w, "wrong", nil)
 				if err != nil {
 					http.Error(w, err.Error(), http.StatusInternalServerError)
@@ -36,7 +63,7 @@ func HandleAnswer() http.Handler {
 				return
 			}
 
-			err := tpl.ExecuteTemplate(w, "correct", nil)
+			err = tpl.ExecuteTemplate(w, "correct", nil)
 			if err != nil {
 				http.Error(w, err.Error(), http.StatusInternalServerError)
 				return
