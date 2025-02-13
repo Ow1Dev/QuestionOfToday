@@ -27,7 +27,7 @@ func HandleAnswer() http.Handler {
 
 			answer := r.FormValue("answer")
 			if answer != "World wide web" {
-				err := tpl.ExecuteTemplate(w, "wrong", q)
+				err := tpl.ExecuteTemplate(w, "wrong", nil)
 				if err != nil {
 					http.Error(w, err.Error(), http.StatusInternalServerError)
 					return
@@ -36,7 +36,7 @@ func HandleAnswer() http.Handler {
 				return
 			}
 
-			err := tpl.ExecuteTemplate(w, "correct", q)
+			err := tpl.ExecuteTemplate(w, "correct", nil)
 			if err != nil {
 				http.Error(w, err.Error(), http.StatusInternalServerError)
 				return
