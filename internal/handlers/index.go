@@ -4,18 +4,22 @@ import (
 	"net/http"
 	"sync"
 	"text/template"
+	"time"
 
 	"github.com/Ow1Dev/QustionOfToday/internal/repository"
+	"github.com/jackc/pgx/v5/pgtype"
 )
 
 var tmplFile = "template/question.html.tmpl"
 
 var (
 	question = "In a website browser address bar, what does “www” stand for?"
+	id       = "00000000-0000-0000-0000-000000000000"
 )
 
 type Question struct {
 	Question string
+	Id       string
 }
 
 func HandleIndex(
@@ -33,16 +37,22 @@ func HandleIndex(
 				tpl, tplerr = template.ParseFiles(tmplFile)
 			})
 
-			var qu = question
-
+			var qu = Question{
+				question,
+				id,
+			}
 			if !debug {
-				question, err := repo.GetAllQuestions(r.Context())
+				currettime := pgtype.Date{Time: time.Now(), Valid: true}
+				question, err := repo.GetTodaysQuestion(r.Context(), currettime)
 				if err != nil {
 					http.Error(w, err.Error(), http.StatusInternalServerError)
 					return
 				}
 
-				qu = question[0].Question
+				qu = Question{
+					question.Question,
+					question.ID.String(),
+				}
 			}
 
 			if tplerr != nil {
@@ -50,9 +60,7 @@ func HandleIndex(
 				return
 			}
 
-			err := tpl.ExecuteTemplate(w, "question", Question{
-				Question: qu,
-			})
+			err := tpl.ExecuteTemplate(w, "question", qu)
 			if err != nil {
 				http.Error(w, err.Error(), http.StatusInternalServerError)
 				return

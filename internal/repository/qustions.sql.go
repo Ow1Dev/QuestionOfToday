@@ -7,28 +7,23 @@ package repository
 
 import (
 	"context"
+
+	"github.com/google/uuid"
+	"github.com/jackc/pgx/v5/pgtype"
 )
 
-const getAllQuestions = `-- name: GetAllQuestions :many
-SELECT id, question, dato FROM quest_of_today.questions
+const getTodaysQuestion = `-- name: GetTodaysQuestion :one
+SELECT id, question FROM quest_of_today.questions WHERE dato = $1
 `
 
-func (q *Queries) GetAllQuestions(ctx context.Context) ([]QuestOfTodayQuestion, error) {
-	rows, err := q.db.Query(ctx, getAllQuestions)
-	if err != nil {
-		return nil, err
-	}
-	defer rows.Close()
-	var items []QuestOfTodayQuestion
-	for rows.Next() {
-		var i QuestOfTodayQuestion
-		if err := rows.Scan(&i.ID, &i.Question, &i.Dato); err != nil {
-			return nil, err
-		}
-		items = append(items, i)
-	}
-	if err := rows.Err(); err != nil {
-		return nil, err
-	}
-	return items, nil
+type GetTodaysQuestionRow struct {
+	ID       uuid.UUID
+	Question string
+}
+
+func (q *Queries) GetTodaysQuestion(ctx context.Context, dato pgtype.Date) (GetTodaysQuestionRow, error) {
+	row := q.db.QueryRow(ctx, getTodaysQuestion, dato)
+	var i GetTodaysQuestionRow
+	err := row.Scan(&i.ID, &i.Question)
+	return i, err
 }
