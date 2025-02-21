@@ -1,4 +1,8 @@
 {
-  "name": "Gitea DevContainer",
-  "image": "mcr.microsoft.com/devcontainers/go:1.23-bookworm",
+  "name": "QuestionOfToday DevContainer",
+  "dockerComposeFile": "compose.yml",
+  "service": "app",
+  "workspaceFolder": "/workspaces/${localWorkspaceFolderBasename}",
+  "forwardPorts": [3000, 5432],
+  "postCreateCommand": "make deps"
 }
