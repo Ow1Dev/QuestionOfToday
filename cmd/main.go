@@ -20,8 +20,8 @@ func NewMainApp(appVer AppVersion) *cli.App {
 		CmdWeb,
 	}
 
-  app.DefaultCommand = CmdWeb.Name
-  app.Commands = append(app.Commands, subCmdWithConfig...)
+	app.DefaultCommand = CmdWeb.Name
+	app.Commands = append(app.Commands, subCmdWithConfig...)
 
 	return app
 }
