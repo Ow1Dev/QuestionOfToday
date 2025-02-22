@@ -1,15 +1,14 @@
-package main
+package cmd
 
 import (
-	"context"
-	"flag"
 	"fmt"
-	"io"
+	"os"
+	"time"
+
+	"context"
 	"net"
 	"net/http"
-	"os"
 	"sync"
-	"time"
 
 	"github.com/Ow1Dev/QustionOfToday/internal/config"
 	"github.com/Ow1Dev/QustionOfToday/internal/database"
@@ -17,26 +16,18 @@ import (
 	"github.com/Ow1Dev/QustionOfToday/internal/server"
 	"github.com/joho/godotenv"
 	"github.com/rs/zerolog"
+	"github.com/urfave/cli/v2"
 )
 
-func main() {
-	if err := run(os.Stdout, os.Args); err != nil {
-		fmt.Fprintf(os.Stderr, "%s\n", err)
-		os.Exit(1)
-	}
+var CmdWeb = &cli.Command{
+	Name:   "web",
+	Action: runWeb,
 }
 
-func run(stdout io.Writer, args []string) error {
-	_ = stdout
-	_ = args
-
-	debug := flag.Bool("Debug", false, "Turn on debug")
-	flag.Parse()
+func runWeb(ctx *cli.Context) error {
+	debug := true
 
 	godotenv.Load()
-
-	ctx, stop := context.WithCancel(context.Background())
-	defer stop()
 
 	config := config.Config{
 		Host: "0.0.0.0",
@@ -48,11 +39,11 @@ func run(stdout io.Writer, args []string) error {
 		Timestamp().
 		Logger()
 
-	if *debug {
+	if debug {
 		logger.Debug().Msg("Debug is turned on")
 	}
 
-	db, err := database.Connect(ctx)
+	db, err := database.Connect(ctx.Context)
 	if err != nil {
 		return err
 	}
@@ -63,7 +54,7 @@ func run(stdout io.Writer, args []string) error {
 		&logger,
 		&config,
 		repo,
-		*debug,
+		debug,
 	)
 
 	httpServer := &http.Server{
