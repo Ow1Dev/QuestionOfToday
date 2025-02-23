@@ -1,6 +1,9 @@
 package cmd
 
-import "github.com/urfave/cli/v2"
+import (
+	"github.com/joho/godotenv"
+	"github.com/urfave/cli/v2"
+)
 
 type AppVersion struct {
 	Version string
@@ -18,6 +21,7 @@ func NewMainApp(appVer AppVersion) *cli.App {
 
 	subCmdWithConfig := []*cli.Command{
 		CmdWeb,
+		CmdMigrate,
 	}
 
 	app.DefaultCommand = CmdWeb.Name
@@ -27,6 +31,8 @@ func NewMainApp(appVer AppVersion) *cli.App {
 }
 
 func RunMainApp(app *cli.App, args ...string) error {
+	godotenv.Load()
+
 	err := app.Run(args)
 
 	if err == nil {

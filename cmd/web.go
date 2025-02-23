@@ -14,7 +14,6 @@ import (
 	"github.com/Ow1Dev/QustionOfToday/internal/database"
 	"github.com/Ow1Dev/QustionOfToday/internal/repository"
 	"github.com/Ow1Dev/QustionOfToday/internal/server"
-	"github.com/joho/godotenv"
 	"github.com/rs/zerolog"
 	"github.com/urfave/cli/v2"
 )
@@ -25,9 +24,7 @@ var CmdWeb = &cli.Command{
 }
 
 func runWeb(ctx *cli.Context) error {
-	debug := true
-
-	godotenv.Load()
+	debug := false
 
 	config := config.Config{
 		Host: "0.0.0.0",
