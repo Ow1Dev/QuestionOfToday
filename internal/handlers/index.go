@@ -34,7 +34,7 @@ func HandleIndex(
 	return http.HandlerFunc(
 		func(w http.ResponseWriter, r *http.Request) {
 			init.Do(func() {
-				tpl, tplerr = template.ParseFiles(tmplFile)
+				tpl, tplerr = template.ParseFiles("template/base.html.tmpl", tmplFile)
 			})
 
 			var qu = Question{
@@ -60,7 +60,7 @@ func HandleIndex(
 				return
 			}
 
-			err := tpl.ExecuteTemplate(w, "question", qu)
+			err := tpl.ExecuteTemplate(w, "base", qu)
 			if err != nil {
 				http.Error(w, err.Error(), http.StatusInternalServerError)
 				return
