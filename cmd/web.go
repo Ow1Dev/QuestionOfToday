@@ -24,8 +24,6 @@ var CmdWeb = &cli.Command{
 }
 
 func runWeb(ctx *cli.Context) error {
-	debug := false
-
 	config := config.Config{
 		Host: "0.0.0.0",
 		Port: "3000",
@@ -35,10 +33,6 @@ func runWeb(ctx *cli.Context) error {
 		With().
 		Timestamp().
 		Logger()
-
-	if debug {
-		logger.Debug().Msg("Debug is turned on")
-	}
 
 	db, err := database.Connect(ctx.Context)
 	if err != nil {
@@ -51,7 +45,6 @@ func runWeb(ctx *cli.Context) error {
 		&logger,
 		&config,
 		repo,
-		debug,
 	)
 
 	httpServer := &http.Server{

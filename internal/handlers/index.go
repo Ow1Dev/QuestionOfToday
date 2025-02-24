@@ -7,15 +7,11 @@ import (
 	"time"
 
 	"github.com/Ow1Dev/QustionOfToday/internal/repository"
+	"github.com/jackc/pgx/v5"
 	"github.com/jackc/pgx/v5/pgtype"
 )
 
 var tmplFile = "template/question.html.tmpl"
-
-var (
-	question = "In a website browser address bar, what does “www” stand for?"
-	id       = "00000000-0000-0000-0000-000000000000"
-)
 
 type Question struct {
 	Question string
@@ -24,7 +20,6 @@ type Question struct {
 
 func HandleIndex(
 	repo *repository.Queries,
-	debug bool,
 ) http.Handler {
 	var (
 		init   sync.Once
@@ -38,17 +33,19 @@ func HandleIndex(
 			})
 
 			var qu = Question{
-				question,
-				id,
+				"",
+				"00000000-0000-0000-0000-000000000000",
 			}
-			if !debug {
-				currettime := pgtype.Date{Time: time.Now(), Valid: true}
-				question, err := repo.GetTodaysQuestion(r.Context(), currettime)
-				if err != nil {
+
+			currettime := pgtype.Date{Time: time.Now(), Valid: true}
+			question, err := repo.GetTodaysQuestion(r.Context(), currettime)
+
+			if err != nil {
+				if err != pgx.ErrNoRows {
 					http.Error(w, err.Error(), http.StatusInternalServerError)
 					return
 				}
-
+			} else {
 				qu = Question{
 					question.Question,
 					question.ID.String(),
@@ -60,7 +57,7 @@ func HandleIndex(
 				return
 			}
 
-			err := tpl.ExecuteTemplate(w, "base", qu)
+			err = tpl.ExecuteTemplate(w, "base", qu)
 			if err != nil {
 				http.Error(w, err.Error(), http.StatusInternalServerError)
 				return
