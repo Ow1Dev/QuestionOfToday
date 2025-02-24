@@ -32,14 +32,10 @@ func HandleIndex(
 				tpl, tplerr = template.ParseFiles("template/base.html.tmpl", tmplFile)
 			})
 
-			var qu = Question{
-				"",
-				"00000000-0000-0000-0000-000000000000",
-			}
-
 			currettime := pgtype.Date{Time: time.Now(), Valid: true}
 			question, err := repo.GetTodaysQuestion(r.Context(), currettime)
 
+			var qu Question
 			if err != nil {
 				if err != pgx.ErrNoRows {
 					http.Error(w, err.Error(), http.StatusInternalServerError)
@@ -62,7 +58,6 @@ func HandleIndex(
 				http.Error(w, err.Error(), http.StatusInternalServerError)
 				return
 			}
-
 		},
 	)
 }
