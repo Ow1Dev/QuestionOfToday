@@ -2,6 +2,7 @@ package handlers
 
 import (
 	"net/http"
+	"strings"
 	"sync"
 	"text/template"
 
@@ -32,7 +33,7 @@ func HandleAnswer(repo *repository.Queries, logger *zerolog.Logger) http.Handler
 			userAnswer := r.FormValue("answer")
 			id := r.FormValue("id")
 
-			logger.Debug().Msgf("Got id %s", id)
+			logger.Debug().Msgf("Retrieving answer with id %s", id)
 
 			if id == "" {
 				http.NotFound(w, r)
@@ -51,9 +52,7 @@ func HandleAnswer(repo *repository.Queries, logger *zerolog.Logger) http.Handler
 				return
 			}
 
-			logger.Debug().Msgf("Got answer with id %s ", id)
-
-			if userAnswer != realanswer.Answer {
+			if strings.ToLower(userAnswer) != realanswer.Answer {
 				err := tpl.ExecuteTemplate(w, "wrong", nil)
 				if err != nil {
 					http.Error(w, err.Error(), http.StatusInternalServerError)
