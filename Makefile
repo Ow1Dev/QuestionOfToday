@@ -3,6 +3,28 @@ GO ?= go
 AIR_PACKAGE ?= github.com/air-verse/air@v1
 MIGRATE_PACKAGE ?= -tags 'postgres' github.com/golang-migrate/migrate/v4/cmd/migrate@latest
 
+GO_SOURCES := $(wildcard *.go)
+EXECUTABLE ?= questionofday
+
+.PHONY: watch
+watch: ## watch everything and continuously rebuild
+	@bash tools/watch.sh
+
+.PHONY: watch-backend
+watch-backend:
+	$(GO) run $(AIR_PACKAGE) -c .air.toml
+
+.PHONY: watch-build-style
+watch-build-style:
+	@npx @tailwindcss/cli -i ./public/style/input.css -o ./public/style/output.css --watch
+
+.PHONY: backend
+backend: $(EXECUTABLE)
+
+$(EXECUTABLE): $(GO_SOURCES) $(TAGS_PREREQ)
+	$(GO) build $(GOFLAGS) -o ./tmp/$@
+
+.PHONY: build-style
 build-style:
 	@npx @tailwindcss/cli -i ./public/style/input.css -o ./public/style/output.css
 
