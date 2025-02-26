@@ -29,5 +29,5 @@ func addRoutes(
 ) {
 	mux.Handle("GET /static/", http.StripPrefix("/static/", http.FileServer(http.Dir("./public"))))
 	mux.Handle("POST /answer", handlers.HandleAnswer(repo, logger))
-	mux.Handle("GET /", handlers.HandleIndex(repo))
+	mux.Handle("GET /", handlers.HandleQuestion(repo))
 }

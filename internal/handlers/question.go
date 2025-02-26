@@ -18,7 +18,7 @@ type Question struct {
 	Id       string
 }
 
-func HandleIndex(
+func HandleQuestion(
 	repo *repository.Queries,
 ) http.Handler {
 	var (
