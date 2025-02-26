@@ -4,7 +4,7 @@ AIR_PACKAGE ?= github.com/air-verse/air@v1
 MIGRATE_PACKAGE ?= -tags 'postgres' github.com/golang-migrate/migrate/v4/cmd/migrate@latest
 
 build-style:
-	@npm run build-style
+	@npx @tailwindcss/cli -i ./public/style/input.css -o ./public/style/output.css
 
 .PHONY: deps
 deps: deps-frontend deps-backend deps-tools ## install dependencies
