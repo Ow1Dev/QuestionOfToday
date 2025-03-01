@@ -1,26 +1,25 @@
 {{ define "content" }}
   {{ if .Question }}
-    <form hx-post="/answer" class="space-y-4">
-      <h1 class="text-2xl text-card-foreground font-bold text-center mb-4">
-        {{ .Question }}
-      </h1>
-      <input 
-        name="id"
-        hidden
-        value="{{.Id}}"/>
-      <input
-        name="answer"
-        type="text"
-        placeholder="Type your answer here..."
-        class="w-full px-4 py-2 border border-border bg-background bg-background-foreground rounded-lg shadow-xs focus:ring-2 focus:ring-primary focus:outline-hidden"
-      />
-      <button
-        type="submit"
-        class="w-full py-2 bg-primary text-primary-foreground font-semibold rounded-lg ring-offset-background hover:opacity-90 focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
-      >
+    <div class="text-center max-w-2xl mx-auto">
+      <h2 class="text-4xl md:text-5xl font-bold mb-8">{{ .Question }}</h2>
+      <form hx-post="/answer" class="mt-8 flex justify-center">
+        <input 
+          name="id"
+          hidden
+          value="{{.Id}}"/>
+        <input
+          name="answer"
+          type="text"
+          placeholder="Type your answer here..."
+          class="bg-background text-foreground border border-border rounded-l px-4 py-3 w-64 md:w-80 focus:outline-none focus:ring-2 focus:ring-primary"
+        />
+        <button
+          type="submit"
+          class="bg-primary text-primary-foreground px-6 py-3 rounded-r font-semibold hover:opacity-90 transition-opacity disabled:opacity-50"
+        >
         Submit
-      </button>
-    </form>
+        </button>
+      </form>
     </div>
   {{ else }}
     <h1 class="text-2xl text-card-foreground font-bold text-center mb-4">

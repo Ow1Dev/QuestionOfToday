@@ -11,15 +11,29 @@
     <script src="/static/js/htmx.min.js"></script>
 </head>
 <body class="bg-background text-foreground">
-  <div className="flex flex-col min-h-screen bg-background text-foreground">
-  <header className="bg-background text-foreground p-4 border-b border-border">
-    <h1 className="text-xl font-semibold text-center opacity-80">Question Of Today</h1>
-  </header>
-  <main className="flex-grow flex items-center justify-center p-4">
-    {{ block "content" . }}
-      <p>Default Content.  This should be overridden.</p>
-    {{ end }}
-  </main>
+  <div class="flex flex-col min-h-screen bg-background text-foreground">
+    <header class="bg-background text-foreground p-4 border-b border-border">
+      <h1 class="text-xl font-semibold text-center opacity-80">Question Of Today</h1>
+    </header>
+    <main class="flex-grow flex items-center justify-center p-4">
+      {{ block "content" . }}
+        <p>Default Content. This should be overridden.</p>
+      {{ end }}
+    </main>
+    <footer class="bg-card text-card-foreground py-8 border-t border-border mt-auto">
+      <div class="container mx-auto px-4">
+        <div class="text-center">
+          <h3 class="text-lg font-semibold mb-4">Question Of Today</h3>
+          <p class="text-sm opacity-80 mb-4">
+          Challenge yourself daily with thought-provoking questions and expand your knowledge.
+          </p>
+          <Link href="https://github.com" class="text-sm text-primary hover:underline mt-2 inline-block">
+          View on GitHub
+          </Link>
+        </div>
+      </div>
+    </footer>
+  </div>
 </body>
 </html>
 {{ end }}

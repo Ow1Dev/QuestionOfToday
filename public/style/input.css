@@ -1,7 +1,7 @@
 @import 'tailwindcss';
 
 @theme {
-  --color-*: initial;
+  /*--color-*: initial;*/
   --color-border: hsl(var(--border));
   --color-background: hsl(var(--background));
   --color-foreground: hsl(var(--foreground));
@@ -50,5 +50,20 @@
 @layer base {
   * {
     @apply border-border;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    color: hsl(var(--foreground));
+    background: hsl(var(--background));
+    background-image: linear-gradient(to right, hsla(var(--primary), 0.1) 1px, transparent 1px),
+      linear-gradient(to bottom, hsla(var(--primary), 0.1) 1px, transparent 1px);
+    background-size: 20px 20px;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
   }
 }
