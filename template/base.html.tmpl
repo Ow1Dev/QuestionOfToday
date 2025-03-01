@@ -10,12 +10,16 @@
     <title>Question of the day</title>
     <script src="/static/js/htmx.min.js"></script>
 </head>
-<body class="flex items-center justify-center h-screen">
-  <div class="bg-card p-8 rounded-lg shadow-md w-full max-w-md">
+<body class="bg-background text-foreground">
+  <div className="flex flex-col min-h-screen bg-background text-foreground">
+  <header className="bg-background text-foreground p-4 border-b border-border">
+    <h1 className="text-xl font-semibold text-center opacity-80">Question Of Today</h1>
+  </header>
+  <main className="flex-grow flex items-center justify-center p-4">
     {{ block "content" . }}
       <p>Default Content.  This should be overridden.</p>
     {{ end }}
-  </div>
+  </main>
 </body>
 </html>
 {{ end }}
