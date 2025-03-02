@@ -2,7 +2,7 @@
   {{ if .Question }}
     <div class="text-center max-w-2xl mx-auto">
       <h2 class="text-4xl md:text-5xl font-bold mb-8">{{ .Question }}</h2>
-      <form hx-post="/answer" class="mt-8 flex justify-center">
+      <form hx-post="/answer" hx-target="main" class="mt-8 flex justify-center">
         <input 
           name="id"
           hidden
