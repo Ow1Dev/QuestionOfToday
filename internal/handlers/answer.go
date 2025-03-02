@@ -62,7 +62,7 @@ func HandleAnswer(repo *repository.Queries, logger *zerolog.Logger) http.Handler
 				return
 			}
 
-			err = tpl.ExecuteTemplate(w, "correct", nil)
+			err = tpl.ExecuteTemplate(w, "correct", realanswer)
 			if err != nil {
 				http.Error(w, err.Error(), http.StatusInternalServerError)
 				return
