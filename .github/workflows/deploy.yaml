@@ -45,5 +45,5 @@ jobs:
           context: .
           push: true
           tags: |
-            ghcr.io/ow1dev/questionofday:latest
-            ghcr.io/ow1dev/questionofday:${{ github.sha }}
+            ghcr.io/ow1dev/questionoftoday:latest
+            ghcr.io/ow1dev/questionoftoday:${{ github.sha }}

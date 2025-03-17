@@ -4,7 +4,7 @@ AIR_PACKAGE ?= github.com/air-verse/air@v1
 MIGRATE_PACKAGE ?= -tags 'postgres' github.com/golang-migrate/migrate/v4/cmd/migrate@latest
 SQLC ?= github.com/sqlc-dev/sqlc/cmd/sqlc@latest
 
-DOCKER_IMAGE ?= ow1dev/questionofday
+DOCKER_IMAGE ?= ow1dev/questionoftoday
 DOCKER_TAG ?= latest
 DOCKER_REF := $(DOCKER_IMAGE):$(DOCKER_TAG)
 
@@ -13,7 +13,7 @@ TAGS ?=
 GO_SOURCES := $(wildcard *.go)
 
 GOFLAGS := -v
-EXECUTABLE ?= questionofday
+EXECUTABLE ?= questionoftoday
 
 .PHONY: all
 all: build
