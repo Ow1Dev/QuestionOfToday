@@ -79,6 +79,10 @@ deps-tools: ## install tool dependencies
 	$(GO) install $(SQLC) & \
 	wait
 
+.PHONY: update 
+update:
+	@nix flake update
+
 node_modules: package-lock.json
 	npm install --no-save
 	@touch node_modules
