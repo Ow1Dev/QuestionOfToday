@@ -13,13 +13,11 @@
       {
         devShells.default = pkgs.mkShell {
           buildInputs = with pkgs; [
-            go
+            go_1_24
             air
-            go-migrate
             sqlc
             nodejs_22
             just
-            tailwindcss
           ];
         };
       }
