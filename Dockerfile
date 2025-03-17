@@ -15,6 +15,6 @@ FROM docker.io/library/alpine:3.21
 
 EXPOSE 3000
 
-ENTRYPOINT ["/app/qot/questionofday"]
+ENTRYPOINT ["/app/qot/questionoftoday"]
 
-COPY --from=build-env /go/src/code.question-of-today/qot/questionofday /app/qot/questionofday
+COPY --from=build-env /go/src/code.question-of-today/qot/questionoftoday /app/qot/questionoftoday
